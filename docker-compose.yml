@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+
+  userweb:
+    image: registry.gitlab.com/open-trip/user-web-account:master
+
+    networks:
+      - web
+      - netdata
+    deploy:
+      replicas: 2
+      labels:
+        - "traefik.backend=web-user"
+        - "traefik.docker.network=web"
+        - "traefik.frontend.rule=Host:account.opentripapp.com;PathPrefix:/"
+        - "traefik.enable=true"
+        - "traefik.port=80"
+
+networks:
+  netdata:
+    external: true
+  web:
+    external: true
